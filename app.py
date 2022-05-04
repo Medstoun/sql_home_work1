@@ -29,14 +29,16 @@ def main():
             ORDER BY release_year DESC
             LIMIT 1   
         """
-        response = db_connect(query)[0]
-        response_json = {
-            'title': response[0],
-            'country': response[1],
-            'release_year': response[2],
-            'genre': response[3],
-            'description': response[4]
-        }
+        response = db_connect(query)
+        response_json = []
+        for i in response:
+            response_json.append({
+                'title': i[0],
+                'country': i[1],
+                'release_year': i[2],
+                'genre': i[3],
+                'description': i[4]
+            })
         return jsonify(response_json)
 
     @app.route('/movie/<int:start>/to/<int:end>')
@@ -151,6 +153,8 @@ def main():
                 'type': film[2]
             })
         return response_json
+
+    app.run()
 
 
 if __name__ == '__main__':
